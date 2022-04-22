@@ -50,7 +50,7 @@ end
 function Player:checkResolve(e, direction)
   -- Check if e is type box; NOTE also works with base classes in that both [e:is(Box)] and [e:is(Entity)] would return [true]; 
   -- ! Also capitalized the class name
-  if e:is(Box) then
+  if e:is(Ledge) then
     -- check if the direction is bottom i.e. collision between bottom of player and top of box
     if direction == "bottom"  then
       return true

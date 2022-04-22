@@ -5,6 +5,7 @@ function love.load()
   -- Load the entities
   require "player"
   require "wall"
+  require "ledge"
   require "box"
 
   -- Entity start position
@@ -20,6 +21,8 @@ function love.load()
   -- So every wall doesnt need to check collision with each other everytime
   walls = {}
 
+  ledges = {}
+
   -- Wall map
   map = {
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -29,7 +32,7 @@ function love.load()
         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
         {1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1},
+        {1,2,2,2,0,0,0,0,0,0,0,0,0,1,1,1},
         {1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1},
         {1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1},
         {1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1},
@@ -42,6 +45,9 @@ function love.load()
       if w == 1 then
         -- All wall to the walls table
         table.insert(walls, Wall((j-1)*50, (i-1)*50))
+      elseif w == 2 then
+        -- All ledge to ledge table
+        table.insert(ledges, Ledge((j-1)*50, (i-1)*50))
       end
     end
   end
@@ -63,6 +69,10 @@ function love.update(dt)
 
   -- Update the walls entity only
   for i,v in ipairs(walls) do
+    v:update(dt)
+  end
+
+  for i,v in ipairs(ledges) do
     v:update(dt)
   end
 
@@ -103,7 +113,18 @@ function love.update(dt)
       end
     end
   end
+
+  -- Check collision with every ledge
+  for i,ledge in ipairs(ledges) do
+    for j,object in ipairs(objects) do
+      local collision = object:resolveCollision(ledge)
+      if collision then
+        loop = true
+      end
+    end
+  end
 end
+
 
 function love.draw()
   -- Draw each entities
@@ -115,6 +136,11 @@ function love.draw()
   for i,v in ipairs(walls) do
     v:draw()
   end
-end
+
+  -- Draw ledges
+  for i,v in ipairs(ledges) do
+    v:draw()
+  end 
+end 
     
 
