@@ -117,15 +117,15 @@ function Entity:resolveCollision(e)
         if a and b then
           self:collide(e, "bottom")
         end
-      else
-        -- self:collide(e, "top")
+      -- else
+      --   -- self:collide(e, "top")
 
-        -- ! Go through platform
-        local a = self:checkResolve(e, "bottom")
-        local b = e:checkResolve(self, "top")
-        if a and b then
-          self:collide(e, "top")
-        end
+      --   -- ! Go through platform
+      --   local a = self:checkResolve(e, "top")
+      --   local b = e:checkResolve(self, "bottom")
+      --   if a and b then
+      --     self:collide(e, "top")
+      --   end
       end
     end
     -- After collision is resolved return true so it exits to main.lua
@@ -160,10 +160,10 @@ function Entity:collide(e, direction)
     self.y = self.y - pushback
     -- So that gravity will not continually increasing we need to reset gravity when entities hit bottom/collision with the bottom
     self.gravity = 0
-  elseif direction == "top" then
-    -- Bottom side of WALL [e.y + e.height] - [self.y] top side of PLAYER
-    local pushback = e.y + e.height - self.y
-    -- alligned with bottom side of wall; push player down
-    self.y = self.y + pushback
+  -- elseif direction == "top" then
+  --   -- Bottom side of WALL [e.y + e.height] - [self.y] top side of PLAYER
+  --   local pushback = e.y + e.height - self.y
+  --   -- alligned with bottom side of wall; push player down
+  --   self.y = self.y + pushback
   end
 end
